@@ -20,12 +20,12 @@ const method = req.method;
         //event driven code execution
         return req.on('end', () =>{
             const parseBody = Buffer.concat(body).toString();
-            const message = parseBody.split('=')[1];
-            fs.writeFileSync('hello.txt',message);
-             // fs.writeFileSync('message.txt', 'Hello');
-        res.statusCode = 302;
-        res.setHeader('Location','/');
-        return res.end();
+            const message = parseBody.split('=')[0];
+            fs.writeFileSync('hello.txt',message, err =>{
+                res.statusCode = 302;
+                res.setHeader('Location','/');
+                return res.end();
+            });
         });
        
     }
