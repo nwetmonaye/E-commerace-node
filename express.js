@@ -1,55 +1,26 @@
-// const http = require('http');
-const path = require('path');
-const express = require('express');
+const path = require('path');  //This module provides utilities for working with file and directory paths.
 
-const app = express();
+const express = require('express');  // The core module for building web applications in Node.js.
+const bodyParser = require('body-parser');  //A middleware that parses incoming request bodies in a format like JSON.
 
-const bodyParser = require('body-parser');
+const app = express();  //Creates an instance of the Express application.
 
-const adminRoutes = require('./routes/admin');
+app.set('view engine', 'pug');  //Sets the template engine to "pug" (formerly known as "Jade").
+app.set('views', 'views');  //Specifies the directory where the template files are located.
+
+const adminData = require('./routes/admin');  //Imports two modules, likely containing route handling logic for the admin-related and shop-related functionality
 const shopRoutes = require('./routes/shop');
 
+app.use(bodyParser.urlencoded({extended: false}));  //Middleware for parsing incoming request bodies with URL-encoded payloads.
+app.use(express.static(path.join(__dirname, 'public'))); //Middleware to serve static files (like images, CSS, and JavaScript) from the "public" directory.
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use('/admin', adminData.routes); //Mounts the routes defined in the adminData module under the "/admin" route.
+app.use(shopRoutes); //Mounts the routes defined in the shopRoutes module at the root level.
 
-app.use(express.static(path.join(__dirname,'public')));
 
-
-app.use('/admin',adminRoutes);
-app.use(shopRoutes);
-
-app.use((req,res,next) => {
+//This middleware handles requests that don't match any of the defined routes. It sends a 404 status and serves the "404.html" file located in the "views" directory.
+app.use((req, res, next) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-// app.use('/', (req,res,next) => {
-    // console.log('This always runs!!');
-//     next();
-// })
-// app.use('/add-product',(req,res, next) => {
-//     console.log('In the middleware');
-//     next();
-//      res.send('<h1>The "Add product" page</h1>');
-//     res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>');
-   
-// });
-// app.use('/product', (req,res,next) => {
-//     console.log(req.body);
-//     res.redirect('/home');
-// });
-
-// app.post('/product', (req,res,next) => {
-//     console.log(req.body);
-//     res.redirect('/home');
-// });
-
-// app.use('/home',(req,res, next) => {
-//     console.log('In another middleware');
-//     res.send('<h1>Hello</h1>');
-// });
-
-// const server = http.createServer(app);
-app.listen(3000);
-
-
-// yesterday become 16.
+app.listen(3000);  //Starts the Express server and listens on port 3000 for incoming HTTP requests.
