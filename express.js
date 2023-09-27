@@ -3,6 +3,8 @@ const path = require('path');  //This module provides utilities for working with
 const express = require('express');  // The core module for building web applications in Node.js.
 const bodyParser = require('body-parser');  //A middleware that parses incoming request bodies in a format like JSON.
 
+const errorController = require('./controller/error');
+const db = require('./util/database');
 
 const app = express();  //Creates an instance of the Express application.
 app.set('view engine', 'ejs'); 
@@ -16,8 +18,6 @@ app.use(express.static(path.join(__dirname, 'public'))); //Middleware to serve s
 
 app.use('/admin', adminRoutes); //Mounts the routes defined in the adminData module under the "/admin" route.
 app.use(shopRoutes); //Mounts the routes defined in the shopRoutes module at the root level.
-
-const errorController = require('./controller/error');
 
 
 //This middleware handles requests that don't match any of the defined routes. It sends a 404 status and serves the "404.html" file located in the "views" directory.
