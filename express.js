@@ -20,9 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findByPk('6525152a229cb0f9f0af3ab0')
+  User.findById('652f50da14b6cc9c424c69e2')
     .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
+      req.user = user;
       next();
     })
     .catch(err => console.log(err));
@@ -34,8 +34,21 @@ app.use(shopRoutes);
 app.use(errorController.get404Page);
 
 mongoose
-.connect('mongodb+srv://nwetmon:PUvIsZqJ7PFFtN4K@cluster0.3anlxrd.mongodb.net/shop?retryWrites=true&w=majority&appName=AtlasApp')
+.connect('mongodb+srv://nwetmon:ioMzbO9duboylv1K@cluster0.3anlxrd.mongodb.net/shop?retryWrites=true&w=majority&appName=AtlasApp')
 .then( result => {
+  User.findOne().then(user => {
+  if(!user){
+    const user = new User ({
+    name: 'Nwet',
+    email: 'nwettest.com',
+    cart: {
+      items: []
+    }
+  });
+   user.save();
+    }
+  });
+
   app.listen(3000);
 })
 .catch(err => {
