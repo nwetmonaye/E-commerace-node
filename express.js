@@ -12,7 +12,7 @@ const errorController = require('./controller/error');
 const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb+srv://nwetmon:eNM81EO2Mkce9QYl@cluster0.3anlxrd.mongodb.net/shop?retryWrites=true&w=majority&appName=AtlasApp';
+const MONGODB_URI = 'mongodb+srv://nwetmon:wtDX6xI6fF2ES5Zy@cluster0.3anlxrd.mongodb.net/shop?retryWrites=true&w=majority&appName=AtlasApp';
 
 const app = express();
 const store = new MongoDBStore({
